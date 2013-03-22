@@ -6,9 +6,9 @@ necessary.
 
 Index: mingw-ocaml/build/ocaml/asmrun/Makefile
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/asmrun/Makefile	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/build/ocaml/asmrun/Makefile	2013-03-21 19:48:01.669337646 -0500
-@@ -24,7 +24,7 @@
+--- mingw-ocaml.orig/build/ocaml/asmrun/Makefile	2013-03-22 13:57:35.401837727 -0500
++++ mingw-ocaml/build/ocaml/asmrun/Makefile	2013-03-22 13:57:35.373851729 -0500
+@@ -26,7 +26,7 @@
    misc.o freelist.o major_gc.o minor_gc.o memory.o alloc.o compare.o ints.o \
    floats.o str.o array.o io.o extern.o intern.o hash.o sys.o parsing.o \
    gc_ctrl.o terminfo.o md5.o obj.o lexing.o printexc.o callback.o weak.o \
@@ -17,7 +17,7 @@ Index: mingw-ocaml/build/ocaml/asmrun/Makefile
    meta.o dynlink.o
  
  ASMOBJS=$(ARCH).o
-@@ -151,6 +151,8 @@
+@@ -153,6 +153,8 @@
  	ln -s ../byterun/globroots.c globroots.c
  unix.c: ../byterun/unix.c
  	ln -s ../byterun/unix.c unix.c
@@ -26,7 +26,7 @@ Index: mingw-ocaml/build/ocaml/asmrun/Makefile
  dynlink.c: ../byterun/dynlink.c
  	ln -s ../byterun/dynlink.c dynlink.c
  signals.c: ../byterun/signals.c
-@@ -161,7 +163,7 @@
+@@ -163,7 +165,7 @@
  LINKEDFILES=misc.c freelist.c major_gc.c minor_gc.c memory.c alloc.c array.c \
    compare.c ints.c floats.c str.c io.c extern.c intern.c hash.c sys.c \
    parsing.c gc_ctrl.c terminfo.c md5.c obj.c lexing.c printexc.c callback.c \
@@ -37,9 +37,9 @@ Index: mingw-ocaml/build/ocaml/asmrun/Makefile
  clean::
 Index: mingw-ocaml/build/ocaml/byterun/Makefile.common
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/build/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.673335646 -0500
-@@ -22,7 +22,7 @@
+--- mingw-ocaml.orig/build/ocaml/byterun/Makefile.common	2013-03-22 13:57:35.401837727 -0500
++++ mingw-ocaml/build/ocaml/byterun/Makefile.common	2013-03-22 13:57:35.373851729 -0500
+@@ -24,7 +24,7 @@
    compare.o ints.o floats.o str.o array.o io.o extern.o intern.o \
    hash.o sys.o meta.o parsing.o gc_ctrl.o terminfo.o md5.o obj.o \
    lexing.o callback.o debugger.o weak.o compact.o finalise.o custom.o \
@@ -50,9 +50,9 @@ Index: mingw-ocaml/build/ocaml/byterun/Makefile.common
    alloc.c array.c compare.c extern.c floats.c gc_ctrl.c hash.c \
 Index: mingw-ocaml/build/ocaml/byterun/unix.c
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/byterun/unix.c	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/build/ocaml/byterun/unix.c	2013-03-21 19:48:01.673335646 -0500
-@@ -13,6 +13,8 @@
+--- mingw-ocaml.orig/build/ocaml/byterun/unix.c	2013-03-22 13:57:35.401837727 -0500
++++ mingw-ocaml/build/ocaml/byterun/unix.c	2013-03-22 13:57:35.373851729 -0500
+@@ -15,6 +15,8 @@
  
  /* Unix-specific stuff */
  
@@ -61,7 +61,7 @@ Index: mingw-ocaml/build/ocaml/byterun/unix.c
  #define _GNU_SOURCE
             /* Helps finding RTLD_DEFAULT in glibc */
  
-@@ -322,3 +324,5 @@
+@@ -323,3 +325,5 @@
  }
  
  #endif
@@ -69,30 +69,30 @@ Index: mingw-ocaml/build/ocaml/byterun/unix.c
 +#endif /* !WIN32 */
 Index: mingw-ocaml/build/ocaml/byterun/win32.c
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/byterun/win32.c	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/build/ocaml/byterun/win32.c	2013-03-21 19:52:08.000000000 -0500
-@@ -11,6 +11,8 @@
- /*                                                                     */
- /***********************************************************************/
+--- mingw-ocaml.orig/build/ocaml/byterun/win32.c	2013-03-22 13:57:35.401837727 -0500
++++ mingw-ocaml/build/ocaml/byterun/win32.c	2013-03-22 13:57:35.373851729 -0500
+@@ -13,6 +13,8 @@
+ 
+ /* $Id$ */
  
 +#ifdef WIN32
 +
  /* Win32-specific stuff */
  
  #include <windows.h>
-@@ -497,3 +499,5 @@
+@@ -479,3 +481,5 @@
+   data[2] = GetCurrentProcessId();
+   return 3;
  }
- 
- #endif
 +
 +#endif /* WIN32 */
 Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.673335646 -0500
-@@ -18,8 +18,8 @@
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile	2013-03-22 13:57:35.401837727 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile	2013-03-22 13:57:35.373851729 -0500
+@@ -20,8 +20,8 @@
  MKLIB=../../boot/ocamlrun ../../tools/ocamlmklib
- COMPFLAGS=-w +33..39 -warn-error A -g
+ COMPFLAGS=-warn-error A -g
  
 -BYTECODE_C_OBJS=st_stubs_b.o
 -NATIVECODE_C_OBJS=st_stubs_n.o
@@ -101,7 +101,7 @@ Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile
  
  THREAD_OBJS= thread.cmo mutex.cmo condition.cmo event.cmo threadUnix.cmo
  
-@@ -35,6 +35,10 @@
+@@ -37,6 +37,10 @@
  	   -c st_stubs.c
  	mv st_stubs.o st_stubs_b.o
  
@@ -112,7 +112,7 @@ Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile
  # Dynamic linking with -lpthread is risky on many platforms, so
  # do not create a shared object for libthreadsnat.
  libthreadsnat.a: $(NATIVECODE_C_OBJS)
-@@ -44,9 +48,13 @@
+@@ -46,9 +50,13 @@
  	$(NATIVECC) -O -I../../asmrun -I../../byterun $(NATIVECCCOMPOPTS) $(SHAREDCCCOMPOPTS) -DNATIVE_CODE -DTARGET_$(ARCH) -DSYS_$(SYSTEM) -c st_stubs.c
  	mv st_stubs.o st_stubs_n.o
  

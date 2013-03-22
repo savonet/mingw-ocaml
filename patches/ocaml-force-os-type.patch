@@ -4,9 +4,9 @@ in the Sys module.
 
 Index: mingw-ocaml/build/ocaml/utils/config.mlp
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/utils/config.mlp	2013-03-21 19:50:57.061591762 -0500
-+++ mingw-ocaml/build/ocaml/utils/config.mlp	2013-03-21 19:50:57.041601763 -0500
-@@ -84,11 +84,7 @@
+--- mingw-ocaml.orig/build/ocaml/utils/config.mlp	2013-03-22 13:57:38.268403632 -0500
++++ mingw-ocaml/build/ocaml/utils/config.mlp	2013-03-22 13:57:38.244415632 -0500
+@@ -86,11 +86,7 @@
  let ext_lib = "%%EXT_LIB%%"
  let ext_dll = "%%EXT_DLL%%"
  
@@ -19,7 +19,7 @@ Index: mingw-ocaml/build/ocaml/utils/config.mlp
  
  let systhread_supported = %%SYSTHREAD_SUPPORT%%;;
  
-@@ -116,7 +112,7 @@
+@@ -118,7 +114,7 @@
    p "ext_asm" ext_asm;
    p "ext_lib" ext_lib;
    p "ext_dll" ext_dll;

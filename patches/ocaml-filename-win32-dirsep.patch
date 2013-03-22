@@ -5,9 +5,9 @@ kernel, that won't work.  This is a quick and dirty fix.
 
 Index: mingw-ocaml/build/ocaml/stdlib/filename.ml
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/stdlib/filename.ml	2013-03-21 19:48:13.807265239 -0500
-+++ mingw-ocaml/build/ocaml/stdlib/filename.ml	2013-03-21 19:48:13.791273240 -0500
-@@ -91,7 +91,7 @@
+--- mingw-ocaml.orig/build/ocaml/stdlib/filename.ml	2013-03-22 13:57:37.792641647 -0500
++++ mingw-ocaml/build/ocaml/stdlib/filename.ml	2013-03-22 13:57:37.776649648 -0500
+@@ -93,7 +93,7 @@
  module Win32 = struct
    let current_dir_name = "."
    let parent_dir_name = ".."

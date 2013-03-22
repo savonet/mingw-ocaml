@@ -1,5 +1,4 @@
 ocaml-disable-cmxs.patch
-ocaml-i386-profiling.patch
 ocaml-win32unix-path.patch
 ocaml-combined-Makefile.patch
 ocaml-filename-win32-dirsep.patch
