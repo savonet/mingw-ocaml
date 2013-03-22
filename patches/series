@@ -8,3 +8,4 @@ ocaml-fix-opt-link-opts.patch
 ocaml-run-ranlib-on-threads.patch
 ocaml-force-os-type.patch
 findlib-fix-camlp4.patch
+dlfcn-win32-clean-exit.patch
