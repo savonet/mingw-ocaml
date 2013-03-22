@@ -1,0 +1,10 @@
+ocaml-disable-cmxs.patch
+ocaml-i386-profiling.patch
+ocaml-win32unix-path.patch
+ocaml-combined-Makefile.patch
+ocaml-filename-win32-dirsep.patch
+ocaml-no-stdlib-dir.patch
+ocaml-fix-opt-link-opts.patch
+ocaml-run-ranlib-on-threads.patch
+ocaml-force-os-type.patch
+findlib-fix-camlp4.patch

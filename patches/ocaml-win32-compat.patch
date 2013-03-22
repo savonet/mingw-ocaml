@@ -1,0 +1,62 @@
+Index: b/ocaml/byterun/win32.c
+===================================================================
+--- a/ocaml/byterun/win32.c	2011-10-09 04:22:46.389151425 +0200
++++ b/ocaml/byterun/win32.c	2011-10-09 04:22:55.020833592 +0200
+@@ -37,6 +37,26 @@
+ 
+ #include "flexdll.h"
+ 
++/* XXX including <io.h> gets ../byterun/io.h for some reason.
++ * Including the real io.h using the full path fails because of
++ * some strange bug in the system header file itself.  Give up and
++ * just define _finddata_t explicitly here.
++ */
++#ifndef _FSIZE_T_DEFINED
++typedef unsigned long   _fsize_t;
++#define _FSIZE_T_DEFINED
++
++struct _finddata_t
++{
++  unsigned        attrib;
++  time_t          time_create;
++  time_t          time_access;
++  time_t          time_write;
++  _fsize_t        size;
++  char            name[FILENAME_MAX];
++};
++#endif
++
+ #ifndef S_ISREG
+ #define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
+ #endif
+@@ -95,7 +115,7 @@
+   pathlen = strlen(name) + 1;
+   if (pathlen < 256) pathlen = 256;
+   while (1) {
+-    fullname = stat_alloc(pathlen);
++    fullname = caml_stat_alloc(pathlen);
+     retcode = SearchPath(NULL,              /* use system search path */
+                          name,
+                          ".exe",            /* add .exe extension if needed */
+@@ -109,7 +129,7 @@
+       break;
+     }
+     if (retcode < pathlen) break;
+-    stat_free(fullname);
++    caml_stat_free(fullname);
+     pathlen = retcode + 1;
+   }
+   return fullname;
+Index: b/ocaml/otherlibs/systhreads/st_win32.h
+===================================================================
+--- a/ocaml/otherlibs/systhreads/st_win32.h	2010-04-27 09:55:08.000000000 +0200
++++ b/ocaml/otherlibs/systhreads/st_win32.h	2011-10-09 04:22:55.020833592 +0200
+@@ -16,7 +16,7 @@
+ /* Win32 implementation of the "st" interface */
+ 
+ #include <windows.h>
+-#include <WinError.h>
++#include <winerror.h>
+ #include <stdio.h>
+ #include <signal.h>
+ 

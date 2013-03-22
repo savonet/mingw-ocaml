@@ -1,0 +1,66 @@
+Combined Makefiles again: These libraries depend on the unix library,
+but really they depend on either the ("real") unix library or the
+win32unix library.  Include both, with win32unix first, on the basis
+that this should pick up the correct one in all cases.
+
+Index: mingw-ocaml/ocaml/otherlibs/systhreads/Makefile
+===================================================================
+--- mingw-ocaml.orig/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:55:19.000000000 -0500
+@@ -13,8 +13,8 @@
+ 
+ include ../../config/Makefile
+ 
+-CAMLC=../../ocamlcomp.sh -I ../unix
+-CAMLOPT=../../ocamlcompopt.sh -I ../unix
++CAMLC=../../ocamlcomp.sh -I ../win32unix -I ../unix
++CAMLOPT=../../ocamlcompopt.sh -I ../win32unix -I ../unix
+ MKLIB=../../boot/ocamlrun ../../tools/ocamlmklib
+ COMPFLAGS=-w +33..39 -warn-error A -g
+ 
+Index: mingw-ocaml/ocaml/otherlibs/bigarray/Makefile
+===================================================================
+--- mingw-ocaml.orig/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.021272821 -0500
+@@ -12,8 +12,8 @@
+ #########################################################################
+ 
+ LIBNAME=bigarray
+-EXTRACFLAGS=-I../unix -DIN_OCAML_BIGARRAY -DCAML_NAME_SPACE
+-EXTRACAMLFLAGS=-I ../unix
++EXTRACFLAGS=-I../win32unix -I../unix -DIN_OCAML_BIGARRAY -DCAML_NAME_SPACE
++EXTRACAMLFLAGS=-I ../win32unix -I ../unix
+ COBJS=bigarray_stubs.$(O) mmap_unix.$(O)
+ CAMLOBJS=bigarray.cmo
+ HEADERS=bigarray.h
+Index: mingw-ocaml/ocaml/myocamlbuild.ml
+===================================================================
+--- mingw-ocaml.orig/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.021272821 -0500
+@@ -105,9 +105,11 @@
+   if mixed then ".."/dir else dir;;
+ 
+ let unix_dir =
+-  match Sys.os_type with
+-  | "Win32" -> if_mixed_dir "otherlibs/win32unix"
+-  | _       -> if_mixed_dir "otherlibs/unix";;
++  if_mixed_dir (
++    let win32path = "otherlibs/win32unix" in
++    if Sys.file_exists (win32path / "unix.cma") then win32path
++    else "otherlibs/unix"
++  );;
+ 
+ let threads_dir    = if_mixed_dir "otherlibs/threads";;
+ let systhreads_dir = if_mixed_dir "otherlibs/systhreads";;
+Index: mingw-ocaml/ocaml/ocamldoc/Makefile
+===================================================================
+--- mingw-ocaml.orig/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.021272821 -0500
+@@ -68,6 +68,7 @@
+ INCLUDES_NODEP=	-I $(OCAMLSRCDIR)/stdlib \
+ 	-I $(OCAMLSRCDIR)/otherlibs/str \
+ 	-I $(OCAMLSRCDIR)/otherlibs/dynlink \
++	-I $(OCAMLSRCDIR)/otherlibs/win32unix \
+ 	-I $(OCAMLSRCDIR)/otherlibs/unix \
+ 	-I $(OCAMLSRCDIR)/otherlibs/num \
+ 	-I $(OCAMLSRCDIR)/otherlibs/graph

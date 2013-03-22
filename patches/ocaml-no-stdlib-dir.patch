@@ -1,0 +1,22 @@
+Not sure if this is right, but OCAML_STDLIB_DIR can be undefined
+in our cross-compiler.  It's only used in a one place in the C
+code so this works around it.
+
+Index: mingw-ocaml/ocaml/byterun/dynlink.c
+===================================================================
+--- mingw-ocaml.orig/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.387966213 -0500
++++ mingw-ocaml/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.371974215 -0500
+@@ -78,7 +78,12 @@
+ 
+   stdlib = getenv("OCAMLLIB");
+   if (stdlib == NULL) stdlib = getenv("CAMLLIB");
+-  if (stdlib == NULL) stdlib = OCAML_STDLIB_DIR;
++  if (stdlib == NULL)
++#ifdef OCAML_STDLIB_DIR
++    stdlib = OCAML_STDLIB_DIR;
++#else
++    stdlib = ".";
++#endif
+   ldconfname = caml_stat_alloc(strlen(stdlib) + 2 + sizeof(LD_CONF_NAME));
+   strcpy(ldconfname, stdlib);
+   strcat(ldconfname, "/" LD_CONF_NAME);

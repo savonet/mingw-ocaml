@@ -1,0 +1,30 @@
+Displayed os_type when calling ocamlc -config is wrong.
+This patch forces the correct value without changing anything
+in the Sys module.
+
+Index: mingw-ocaml/ocaml/utils/config.mlp
+===================================================================
+--- mingw-ocaml.orig/ocaml/utils/config.mlp	2013-03-21 19:50:57.061591762 -0500
++++ mingw-ocaml/ocaml/utils/config.mlp	2013-03-21 19:50:57.041601763 -0500
+@@ -84,11 +84,7 @@
+ let ext_lib = "%%EXT_LIB%%"
+ let ext_dll = "%%EXT_DLL%%"
+ 
+-let default_executable_name =
+-  match Sys.os_type with
+-    "Unix" -> "a.out"
+-  | "Win32" | "Cygwin" -> "camlprog.exe"
+-  | _ -> "camlprog"
++let default_executable_name = "camlprog.exe"
+ 
+ let systhread_supported = %%SYSTHREAD_SUPPORT%%;;
+ 
+@@ -116,7 +112,7 @@
+   p "ext_asm" ext_asm;
+   p "ext_lib" ext_lib;
+   p "ext_dll" ext_dll;
+-  p "os_type" Sys.os_type;
++  p "os_type" "Win32";
+   p "default_executable_name" default_executable_name;
+   p_bool "systhread_supported" systhread_supported;
+   flush oc;
