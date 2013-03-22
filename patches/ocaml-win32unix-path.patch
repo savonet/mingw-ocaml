@@ -3,10 +3,10 @@ but really they depend on either the ("real") unix library or the
 win32unix library.  Include both, with win32unix first, on the basis
 that this should pick up the correct one in all cases.
 
-Index: mingw-ocaml/ocaml/otherlibs/systhreads/Makefile
+Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:43:58.041262821 -0500
-+++ mingw-ocaml/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:55:19.000000000 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:55:19.000000000 -0500
 @@ -13,8 +13,8 @@
  
  include ../../config/Makefile
@@ -18,10 +18,10 @@ Index: mingw-ocaml/ocaml/otherlibs/systhreads/Makefile
  MKLIB=../../boot/ocamlrun ../../tools/ocamlmklib
  COMPFLAGS=-w +33..39 -warn-error A -g
  
-Index: mingw-ocaml/ocaml/otherlibs/bigarray/Makefile
+Index: mingw-ocaml/build/ocaml/otherlibs/bigarray/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.041262821 -0500
-+++ mingw-ocaml/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.021272821 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/bigarray/Makefile	2013-03-21 19:43:58.021272821 -0500
 @@ -12,8 +12,8 @@
  #########################################################################
  
@@ -33,10 +33,10 @@ Index: mingw-ocaml/ocaml/otherlibs/bigarray/Makefile
  COBJS=bigarray_stubs.$(O) mmap_unix.$(O)
  CAMLOBJS=bigarray.cmo
  HEADERS=bigarray.h
-Index: mingw-ocaml/ocaml/myocamlbuild.ml
+Index: mingw-ocaml/build/ocaml/myocamlbuild.ml
 ===================================================================
---- mingw-ocaml.orig/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.041262821 -0500
-+++ mingw-ocaml/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.021272821 -0500
+--- mingw-ocaml.orig/build/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/build/ocaml/myocamlbuild.ml	2013-03-21 19:43:58.021272821 -0500
 @@ -105,9 +105,11 @@
    if mixed then ".."/dir else dir;;
  
@@ -52,10 +52,10 @@ Index: mingw-ocaml/ocaml/myocamlbuild.ml
  
  let threads_dir    = if_mixed_dir "otherlibs/threads";;
  let systhreads_dir = if_mixed_dir "otherlibs/systhreads";;
-Index: mingw-ocaml/ocaml/ocamldoc/Makefile
+Index: mingw-ocaml/build/ocaml/ocamldoc/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.041262821 -0500
-+++ mingw-ocaml/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.021272821 -0500
+--- mingw-ocaml.orig/build/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.041262821 -0500
++++ mingw-ocaml/build/ocaml/ocamldoc/Makefile	2013-03-21 19:43:58.021272821 -0500
 @@ -68,6 +68,7 @@
  INCLUDES_NODEP=	-I $(OCAMLSRCDIR)/stdlib \
  	-I $(OCAMLSRCDIR)/otherlibs/str \

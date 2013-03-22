@@ -1,10 +1,10 @@
 Make sure that PROFILE_* macros are defined on MinGW.  Not sure
 what to put in them yet, so at the moment they are just empty.
 
-Index: mingw-ocaml/ocaml/asmrun/i386.S
+Index: mingw-ocaml/build/ocaml/asmrun/i386.S
 ===================================================================
---- mingw-ocaml.orig/ocaml/asmrun/i386.S	2013-03-21 19:42:04.566032628 -0500
-+++ mingw-ocaml/ocaml/asmrun/i386.S	2013-03-21 19:42:04.546042628 -0500
+--- mingw-ocaml.orig/build/ocaml/asmrun/i386.S	2013-03-21 19:42:04.566032628 -0500
++++ mingw-ocaml/build/ocaml/asmrun/i386.S	2013-03-21 19:42:04.546042628 -0500
 @@ -92,6 +92,9 @@
          movl %esp, %ebp; \
          call .mcount; \

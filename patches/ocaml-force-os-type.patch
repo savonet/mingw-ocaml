@@ -2,10 +2,10 @@ Displayed os_type when calling ocamlc -config is wrong.
 This patch forces the correct value without changing anything
 in the Sys module.
 
-Index: mingw-ocaml/ocaml/utils/config.mlp
+Index: mingw-ocaml/build/ocaml/utils/config.mlp
 ===================================================================
---- mingw-ocaml.orig/ocaml/utils/config.mlp	2013-03-21 19:50:57.061591762 -0500
-+++ mingw-ocaml/ocaml/utils/config.mlp	2013-03-21 19:50:57.041601763 -0500
+--- mingw-ocaml.orig/build/ocaml/utils/config.mlp	2013-03-21 19:50:57.061591762 -0500
++++ mingw-ocaml/build/ocaml/utils/config.mlp	2013-03-21 19:50:57.041601763 -0500
 @@ -84,11 +84,7 @@
  let ext_lib = "%%EXT_LIB%%"
  let ext_dll = "%%EXT_DLL%%"

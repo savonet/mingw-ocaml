@@ -2,10 +2,10 @@ Not sure if this is right, but OCAML_STDLIB_DIR can be undefined
 in our cross-compiler.  It's only used in a one place in the C
 code so this works around it.
 
-Index: mingw-ocaml/ocaml/byterun/dynlink.c
+Index: mingw-ocaml/build/ocaml/byterun/dynlink.c
 ===================================================================
---- mingw-ocaml.orig/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.387966213 -0500
-+++ mingw-ocaml/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.371974215 -0500
+--- mingw-ocaml.orig/build/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.387966213 -0500
++++ mingw-ocaml/build/ocaml/byterun/dynlink.c	2013-03-21 19:48:44.371974215 -0500
 @@ -78,7 +78,12 @@
  
    stdlib = getenv("OCAMLLIB");

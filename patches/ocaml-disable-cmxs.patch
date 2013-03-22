@@ -1,10 +1,10 @@
 I couldn't get *.cmxs files to build in the cross-compiler.  This
 patch disables them.
 
-Index: mingw-ocaml/ocaml/otherlibs/Makefile.shared
+Index: mingw-ocaml/build/ocaml/otherlibs/Makefile.shared
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/Makefile.shared	2013-03-21 19:40:02.615042719 -0500
-+++ mingw-ocaml/ocaml/otherlibs/Makefile.shared	2013-03-21 19:40:02.591054720 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/Makefile.shared	2013-03-21 19:40:02.615042719 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/Makefile.shared	2013-03-21 19:40:02.591054720 -0500
 @@ -40,7 +40,8 @@
  
  all: lib$(CLIBNAME).$(A) $(LIBNAME).cma $(CMIFILES)

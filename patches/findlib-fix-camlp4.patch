@@ -1,7 +1,7 @@
-Index: mingw-ocaml/findlib/configure
+Index: mingw-ocaml/build/findlib/configure
 ===================================================================
---- mingw-ocaml.orig/findlib/configure	2013-03-21 19:53:19.606278979 -0500
-+++ mingw-ocaml/findlib/configure	2013-03-21 19:54:59.032537079 -0500
+--- mingw-ocaml.orig/build/findlib/configure	2013-03-21 19:53:19.606278979 -0500
++++ mingw-ocaml/build/findlib/configure	2013-03-21 19:54:59.032537079 -0500
 @@ -113,6 +113,7 @@
  ocamlfind_bin=""
  ocamlfind_man=""

@@ -1,7 +1,7 @@
-Index: mingw-ocaml/ocaml/otherlibs/win32unix/Makefile.nt
+Index: mingw-ocaml/build/ocaml/otherlibs/win32unix/Makefile.nt
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/win32unix/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/win32unix/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/win32unix/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/win32unix/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
 @@ -39,7 +39,7 @@
  COBJS=$(ALL_FILES:.c=.$(O))
  CAMLOBJS=unix.cmo unixLabels.cmo
@@ -11,10 +11,10 @@ Index: mingw-ocaml/ocaml/otherlibs/win32unix/Makefile.nt
  EXTRACAMLFLAGS=-nolabels
  EXTRACFLAGS=-I../unix
  HEADERS=unixsupport.h socketaddr.h
-Index: mingw-ocaml/ocaml/otherlibs/str/Makefile
+Index: mingw-ocaml/build/ocaml/otherlibs/str/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/str/Makefile	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/str/Makefile	2013-03-21 19:48:53.479417908 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/str/Makefile	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/str/Makefile	2013-03-21 19:48:53.479417908 -0500
 @@ -18,6 +18,7 @@
  COBJS=strstubs.$(O)
  CLIBNAME=camlstr
@@ -23,10 +23,10 @@ Index: mingw-ocaml/ocaml/otherlibs/str/Makefile
  
  include ../Makefile
  
-Index: mingw-ocaml/ocaml/otherlibs/num/Makefile
+Index: mingw-ocaml/build/ocaml/otherlibs/num/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/num/Makefile	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/num/Makefile	2013-03-21 19:48:53.479417908 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/num/Makefile	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/num/Makefile	2013-03-21 19:48:53.479417908 -0500
 @@ -21,6 +21,7 @@
    ratio.cmo num.cmo arith_status.cmo
  CMIFILES=big_int.cmi nat.cmi num.cmi ratio.cmi arith_status.cmi
@@ -35,10 +35,10 @@ Index: mingw-ocaml/ocaml/otherlibs/num/Makefile
  
  include ../Makefile
  
-Index: mingw-ocaml/ocaml/otherlibs/win32graph/Makefile.nt
+Index: mingw-ocaml/build/ocaml/otherlibs/win32graph/Makefile.nt
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/win32graph/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/win32graph/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/win32graph/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/win32graph/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
 @@ -16,7 +16,7 @@
  CAMLOBJS=graphics.cmo
  WIN32LIBS=$(call SYSLIB,kernel32) $(call SYSLIB,gdi32) $(call SYSLIB,user32)
@@ -48,10 +48,10 @@ Index: mingw-ocaml/ocaml/otherlibs/win32graph/Makefile.nt
  
  include ../Makefile.nt
  
-Index: mingw-ocaml/ocaml/otherlibs/bigarray/Makefile.nt
+Index: mingw-ocaml/build/ocaml/otherlibs/bigarray/Makefile.nt
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/bigarray/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/bigarray/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/bigarray/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/bigarray/Makefile.nt	2013-03-21 19:48:53.479417908 -0500
 @@ -17,6 +17,7 @@
  COBJS=bigarray_stubs.$(O) mmap_win32.$(O)
  CAMLOBJS=bigarray.cmo
@@ -60,10 +60,10 @@ Index: mingw-ocaml/ocaml/otherlibs/bigarray/Makefile.nt
  
  include ../Makefile.nt
  
-Index: mingw-ocaml/ocaml/otherlibs/systhreads/Makefile.nt
+Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
-+++ mingw-ocaml/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-21 19:55:10.000000000 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-21 19:48:53.503405907 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-21 19:55:10.000000000 -0500
 @@ -19,6 +19,7 @@
  COMPFLAGS=-w +33 -warn-error A -g
  MKLIB=../../boot/ocamlrun ../../tools/ocamlmklib

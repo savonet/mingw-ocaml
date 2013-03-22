@@ -1,7 +1,7 @@
-Index: mingw-ocaml/dlfcn-win32/configure
+Index: mingw-ocaml/build/dlfcn-win32/configure
 ===================================================================
---- mingw-ocaml.orig/dlfcn-win32/configure	2013-03-21 19:23:41.978728621 -0500
-+++ mingw-ocaml/dlfcn-win32/configure	2013-03-22 12:52:15.799265082 -0500
+--- mingw-ocaml.orig/build/dlfcn-win32/configure	2013-03-21 19:23:41.978728621 -0500
++++ mingw-ocaml/build/dlfcn-win32/configure	2013-03-22 12:52:15.799265082 -0500
 @@ -190,3 +190,5 @@
      echo "msvc:   $msvc";
      echo "strip:  $stripping";

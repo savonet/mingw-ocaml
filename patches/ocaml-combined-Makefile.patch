@@ -4,10 +4,10 @@ combine all objects into one Makefile, and make sure the source is
 defended by #ifdef/#ifndef WIN32 ... #endif, around the whole files as
 necessary.
 
-Index: mingw-ocaml/ocaml/asmrun/Makefile
+Index: mingw-ocaml/build/ocaml/asmrun/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/asmrun/Makefile	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/ocaml/asmrun/Makefile	2013-03-21 19:48:01.669337646 -0500
+--- mingw-ocaml.orig/build/ocaml/asmrun/Makefile	2013-03-21 19:48:01.693325647 -0500
++++ mingw-ocaml/build/ocaml/asmrun/Makefile	2013-03-21 19:48:01.669337646 -0500
 @@ -24,7 +24,7 @@
    misc.o freelist.o major_gc.o minor_gc.o memory.o alloc.o compare.o ints.o \
    floats.o str.o array.o io.o extern.o intern.o hash.o sys.o parsing.o \
@@ -35,10 +35,10 @@ Index: mingw-ocaml/ocaml/asmrun/Makefile
    dynlink.c signals.c debugger.c
  
  clean::
-Index: mingw-ocaml/ocaml/byterun/Makefile.common
+Index: mingw-ocaml/build/ocaml/byterun/Makefile.common
 ===================================================================
---- mingw-ocaml.orig/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.673335646 -0500
+--- mingw-ocaml.orig/build/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.693325647 -0500
++++ mingw-ocaml/build/ocaml/byterun/Makefile.common	2013-03-21 19:48:01.673335646 -0500
 @@ -22,7 +22,7 @@
    compare.o ints.o floats.o str.o array.o io.o extern.o intern.o \
    hash.o sys.o meta.o parsing.o gc_ctrl.o terminfo.o md5.o obj.o \
@@ -48,10 +48,10 @@ Index: mingw-ocaml/ocaml/byterun/Makefile.common
  
  PRIMS=\
    alloc.c array.c compare.c extern.c floats.c gc_ctrl.c hash.c \
-Index: mingw-ocaml/ocaml/byterun/unix.c
+Index: mingw-ocaml/build/ocaml/byterun/unix.c
 ===================================================================
---- mingw-ocaml.orig/ocaml/byterun/unix.c	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/ocaml/byterun/unix.c	2013-03-21 19:48:01.673335646 -0500
+--- mingw-ocaml.orig/build/ocaml/byterun/unix.c	2013-03-21 19:48:01.693325647 -0500
++++ mingw-ocaml/build/ocaml/byterun/unix.c	2013-03-21 19:48:01.673335646 -0500
 @@ -13,6 +13,8 @@
  
  /* Unix-specific stuff */
@@ -67,10 +67,10 @@ Index: mingw-ocaml/ocaml/byterun/unix.c
  #endif
 +
 +#endif /* !WIN32 */
-Index: mingw-ocaml/ocaml/byterun/win32.c
+Index: mingw-ocaml/build/ocaml/byterun/win32.c
 ===================================================================
---- mingw-ocaml.orig/ocaml/byterun/win32.c	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/ocaml/byterun/win32.c	2013-03-21 19:52:08.000000000 -0500
+--- mingw-ocaml.orig/build/ocaml/byterun/win32.c	2013-03-21 19:48:01.693325647 -0500
++++ mingw-ocaml/build/ocaml/byterun/win32.c	2013-03-21 19:52:08.000000000 -0500
 @@ -11,6 +11,8 @@
  /*                                                                     */
  /***********************************************************************/
@@ -86,10 +86,10 @@ Index: mingw-ocaml/ocaml/byterun/win32.c
  #endif
 +
 +#endif /* WIN32 */
-Index: mingw-ocaml/ocaml/otherlibs/systhreads/Makefile
+Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile
 ===================================================================
---- mingw-ocaml.orig/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.693325647 -0500
-+++ mingw-ocaml/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.673335646 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.693325647 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile	2013-03-21 19:48:01.673335646 -0500
 @@ -18,8 +18,8 @@
  MKLIB=../../boot/ocamlrun ../../tools/ocamlmklib
  COMPFLAGS=-w +33..39 -warn-error A -g
