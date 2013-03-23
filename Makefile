@@ -6,7 +6,8 @@ OCAML_DIR      := ocaml
 FINDLIB_DIR    := findlib
 OTHER_LIBS     := win32unix str num dynlink bigarray systhreads win32graph
 BUILD_DIR      := build
-INSTALL_PREFIX := $(CURDIR)/binary
+INSTALL_ROOT   := $(CURDIR)/binary
+INSTALL_PREFIX := /usr/local
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
@@ -53,11 +54,11 @@ stamp-build-ocamlcore: stamp-quilt-patches
 	# reduction optimizations using its internal int type, and that must
 	# match Windows' int type.  (That's what -cc and -host are for).
 	cd $(BUILD_DIR)/$(OCAML_DIR) && ./configure \
-	  -prefix /usr/$(MINGW_HOST) \
-	  -bindir /usr/$(MINGW_HOST)/bin \
-	  -libdir /usr/$(MINGW_HOST)/lib/ocaml \
+	  -prefix $(INSTALL_PREFIX)/$(MINGW_HOST) \
+	  -bindir $(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	  -libdir $(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	  -no-tk \
-	  -cc "$(BUILD_CC)" -host $(MINGW_HOST) -x11lib /usr/lib -verbose
+	  -cc "$(BUILD_CC)" -host $(MINGW_HOST) -verbose
 	cd $(BUILD_DIR)/$(OCAML_DIR) && make world
 	# Now move the working ocamlrun, ocamlc into the boot/ directory,
 	# overwriting the binary versions which ship with the compiler with
@@ -133,43 +134,43 @@ stamp-build-mingw-ocaml: stamp-build-flexdll stamp-prepare-cross-build
 	touch stamp-build-mingw-ocaml
 
 stamp-install-mingw-ocaml: stamp-build-mingw-ocaml
-	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/threads
-	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/stublibs
-	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin
-	mkdir -p $(INSTALL_PREFIX)/usr/bin
-	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/compiler-libs
-	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin \
-	                                        LIBDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml \
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/threads
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/stublibs
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/compiler-libs
+	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	                                        LIBDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	                                        -C byterun install
-	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin \
-	                                        LIBDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml \
+	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	                                        LIBDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	                                        -C stdlib install
 	cd $(BUILD_DIR)/$(OCAML_DIR) && \
 	for i in $(OTHER_LIBS); do \
-	  make BINDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin \
-	       LIBDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml \
+	  make BINDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	       LIBDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	       -C otherlibs/$$i install; \
 	done
-	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin \
-	                                        LIBDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml \
+	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	                                        LIBDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	                                        -C tools install
-	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin \
-	                                        LIBDIR=$(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml \
+	cd $(BUILD_DIR)/$(OCAML_DIR) && make BINDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	                                        LIBDIR=$(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
 	                        installopt
-	cd $(BUILD_DIR)/$(OCAML_DIR) && install -m 0755 ocamlc $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin
+	cd $(BUILD_DIR)/$(OCAML_DIR) && install -m 0755 ocamlc $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
 	cd $(BUILD_DIR)/$(OCAML_DIR) && cp \
 	  toplevel/topstart.cmo \
 	  typing/outcometree.cmi typing/outcometree.mli \
 	  toplevel/toploop.cmi toplevel/toploop.mli \
 	  toplevel/topdirs.cmi toplevel/topdirs.mli \
  	  toplevel/topmain.cmi toplevel/topmain.mli \
-	  $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml
 	# Rename all the binaries to target-binary
 	for f in ocamlc ocamlcp ocamlrun ocamldep ocamlmklib ocamlmktop ocamlopt ocamlprof; do \
-	  mv $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin/$$f $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-$$f; \
+	  mv $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin/$$f $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-$$f; \
 	done
 	# We do not need this.
-	rm -rf $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/compiler-libs
+	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/compiler-libs
 	touch stamp-install-mingw-ocaml
 
 findlib: stamp-build-findlib
@@ -178,11 +179,11 @@ stamp-build-findlib: stamp-install-mingw-ocaml
 	cd $(BUILD_DIR)/$(FINDLIB_DIR)/tools/extract_args && make
 	$(BUILD_DIR)/$(FINDLIB_DIR)/tools/extract_args/extract_args \
 	  -o $(BUILD_DIR)/$(FINDLIB_DIR)/src/findlib/ocaml_args.ml \
-	  $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-ocamlc \
-	  $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-ocamlcp \
-	  $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-ocamlmktop \
-	  $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-ocamlopt \
-	  $(INSTALL_PREFIX)/usr/bin/$(MINGW_HOST)-ocamldep
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamlc \
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamlcp \
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamlmktop \
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamlopt \
+	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamldep
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && ./configure \
 	  -config /etc/$(MINGW_HOST)-ocamlfind.conf \
 	  -bindir /usr/$(MINGW_HOST)/bin \
@@ -198,48 +199,49 @@ install: stamp-install-all
 stamp-install-all: stamp-build-findlib
 	# Install findlib
 	# Create this dir to please install..
-	mkdir -p $(INSTALL_PREFIX)/usr/lib/ocaml
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib/ocaml
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make install \
-						prefix=$(INSTALL_PREFIX)
+						prefix=$(INSTALL_ROOT)
 	# Remove ocamlfind binary - we will use the native version.
-	rm $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin/ocamlfind
+	rm $(INSTALL_ROOT)/usr/$(MINGW_HOST)/bin/ocamlfind
 	# Remove findlib & num-top libs: if anything uses these we can
 	# add them back later.
-	rm -r $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/findlib
-	rm -r $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/num-top
+	rm -r $(INSTALL_ROOT)/usr/$(MINGW_HOST)/lib/ocaml/findlib
+	rm -r $(INSTALL_ROOT)/usr/$(MINGW_HOST)/lib/ocaml/num-top
 	# XXX topfind gets installed as %{_libdir}/ocaml - not sure why
 	# but delete it anyway.
-	rm -rf $(INSTALL_PREFIX)/usr/lib/ocaml
+	rm -rf $(INSTALL_ROOT)/usr/lib/ocaml
 	# Override /etc/%{_mingw_target}-ocamlfind.conf with our
 	# own version.
-	rm $(INSTALL_PREFIX)/etc/$(MINGW_HOST)-ocamlfind.conf
+	rm $(INSTALL_ROOT)/etc/$(MINGW_HOST)-ocamlfind.conf
 	sed \
 	  -e "s,@libdir@,/usr/$(MINGW_HOST)/lib,g" \
 	  -e 's,@target@,$(MINGW_HOST),g' \
 	  < files/findlib/ocamlfind.conf.in \
-	  > $(INSTALL_PREFIX)/etc/$(MINGW_HOST)-ocamlfind.conf
+	  > $(INSTALL_ROOT)/etc/$(MINGW_HOST)-ocamlfind.conf
 	# Install flexlink binary
-	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/flexdll
+	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
 	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_$(FLEXLINK_CHAIN).o flexdll_initer_$(FLEXLINK_CHAIN).o \
-	                                                     $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/flexdll
+	                                                     $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
 	# Symkink flexlink to flexlink.exe
-	rm -f $(INSTALL_PREFIX)/usr/bin/flexlink
-	ln -s ../$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe $(INSTALL_PREFIX)/usr/bin/flexlink
-	# We choose which object we strip since this is not trivial here..
-	strip --remove-section=.comment --remove-section=.note \
-	  $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe
-	# Now we remove empty dirs..
-	find $(INSTALL_PREFIX) -type d -empty -delete
+	rm -f $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/flexlink
+	ln -s ../$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/flexlink
 	# Nothing in /usr/$(MINGW_HOST)/lib/ocaml should 'a priori' be executable except flexlink.exe..
-	find $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml -type f -executable | grep -v flexlink.exe | while read i; do \
+	find $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml -type f -executable | grep -v flexlink.exe | while read i; do \
 	    chmod -x $$i; done
 	# Now make all script with #!/usr/bin/ocamlrun executables
-	grep -r -l '#!/usr/$(MINGW_HOST)/bin/ocamlrun' $(INSTALL_PREFIX) | while read i; do \
+	grep -r -l '#!/usr/$(MINGW_HOST)/bin/ocamlrun' $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin | while read i; do \
 	  sed -e 's|#!/usr/$(MINGW_HOST)/bin/ocamlrun|#!/usr/bin/$(MINGW_HOST)-ocamlrun|' -i $$i; \
 	  chmod +x $$i; done
-	# Remove rm -rf $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin: all binaries should be prefixed and living in /usr/bin..
-	rm -rf $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/bin
+	# Remove rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin: all binaries should be prefixed and living in /usr/bin..
+	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
 	touch stamp-install-all
 
+root_install: # stamp-install-all
+	find $(INSTALL_ROOT) -type f | sed -e s'#$(INSTALL_ROOT)##g' | while read i; do \
+	  echo mkdir -p `dirname $$i`; \
+	  echo cp $$i `dirname $$i`; \
+	done
+
 clean:
-	rm -rf $(BUILD_DIR) $(INSTALL_PREFIX) patches .pc/ stamp-*
+	rm -rf $(BUILD_DIR) $(INSTALL_ROOT) patches .pc/ stamp-*

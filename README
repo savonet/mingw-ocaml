@@ -1,0 +1,62 @@
+Mingw-ocaml is build of OCaml shipping a cross-compiler 
+using the mingw32 compilation tools. 
+
+Using this project, you can build cross-compilers that
+creates native binary for windows, both 32 and 64 bits.
+By native, we mean that the binary are compliant with 
+the original windows API/ABI, and do not use a POSIX
+emulation such as cygwin.
+
+This also means that the compiler may not support some
+unix-specific features, in particular in the domain of 
+threads management. The compiler supports, in fact, 
+exactly the features supported by the native OCaml compiler
+for Windows.
+
+To build the windows 32 bits compiler, just type:
+
+  make
+
+To build the windows 64 bits compiler, just type:
+
+  make MINGW_HOST=x86_64-w64-mingw32
+
+By default, all binaries are placed into the binary/
+folder. They wil not be functional unless you install
+them all in your system root though. You can do that 
+by typing, as root:
+
+  # make root_install
+
+If you are not already familliar with wingw64,
+i686-w64-mingw32 reffers to 32 bits windows cross-compiling
+tools and x86_64-w64 to 64 bits windows cross-compiling
+tools. In the following, we use i686-w64-mingw32 but
+all instructions apply to x86_64-w64.
+
+The compiler also includes a support for ocamlfind. In 
+order to use it, you should set the environment variable 
+OCAMLFIND_CONF to /etc/i686-w64-mingw32-ocamlfind.conf:
+  
+  export OCAMLFIND_CONF=/etc/i686-w64-mingw32-ocamlfind.conf
+
+Eventually, when the build system uses the autoconf tool, 
+you can build the C libraries with the following options:
+  ./configure --prefix=/usr/i686-w64-mingw32 --host=i686-w64-mingw32
+
+It is convenient to install those libs directly in /usr/i686-w64-mingw32, 
+though not very clean. However, it seems that /usr/i686-w64-mingw32/local is 
+not recognized by the mingw32 cross-compiler.
+
+Additionally, if your configuration script uses pkg-config
+to detect libraries, you may want to set the PKG_CONFIG_PATH
+variable to /usr/i686-w64-mingw32/lib/pkgconfig:
+
+  export PKG_CONFIG_PATH=/usr/i686-w64-mingw32/lib/pkgconfig
+
+This project is not in any way supported by the OCaml original maintainers.
+Please report any issue with this package there:
+ 
+  https://github.com/savonet/mingw-ocaml 
+
+ -- Romain Beauxis <toots@rastageeks.org>  Sat Mar 23 07:07:20 CDT 2013
