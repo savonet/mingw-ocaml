@@ -1,4 +1,5 @@
-flexlink-cross-mingw.patch
+flexdll-cross-mingw.patch
+flexdll-fix-get_output1.patch
 ocaml-disable-cmxs.patch
 ocaml-win32unix-path.patch
 ocaml-combined-Makefile.patch

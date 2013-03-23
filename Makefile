@@ -7,7 +7,8 @@ FINDLIB_DIR    := findlib
 OTHER_LIBS     := win32unix str num dynlink bigarray systhreads win32graph
 BUILD_DIR      := build
 INSTALL_ROOT   := $(CURDIR)/binary
-INSTALL_PREFIX := /usr/local
+INSTALL_PREFIX := /usr
+PATH           := $(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR):$(PATH)
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
@@ -41,6 +42,8 @@ flexdll: stamp-build-flexdll
 
 stamp-build-flexdll: stamp-quilt-patches
 	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe build_$(FLEXLINK_CHAIN)
+	rm -f $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
+	ln -s flexlink.exe $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	touch stamp-build-flexdll
 
 mingw-ocaml: stamp-install-mingw-ocaml
@@ -117,9 +120,7 @@ stamp-build-mingw-ocaml: stamp-build-flexdll stamp-prepare-cross-build
 	cd $(BUILD_DIR)/$(OCAML_DIR) && make ocaml ocamlc
 	cd $(BUILD_DIR)/$(OCAML_DIR) && make -C stdlib
 	cd $(BUILD_DIR)/$(OCAML_DIR) && make -C tools ocamlmklib
-	# Build ocamlopt
-	cd $(BUILD_DIR)/$(OCAML_DIR) && PATH=$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR):$(PATH) \
-	                                   make opt
+	cd $(BUILD_DIR)/$(OCAML_DIR) && make opt
 	# Now build otherlibs for ocamlopt
 	cd $(BUILD_DIR)/$(OCAML_DIR) && \
 	for i in $(OTHER_LIBS); do \
@@ -186,9 +187,9 @@ stamp-build-findlib: stamp-install-mingw-ocaml
 	  $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamldep
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && ./configure \
 	  -config /etc/$(MINGW_HOST)-ocamlfind.conf \
-	  -bindir /usr/$(MINGW_HOST)/bin \
-	  -sitelib /usr/$(MINGW_HOST)/lib/ocaml \
-	  -mandir /usr/share/man \
+	  -bindir  $(INSTALL_PREFIX)/$(MINGW_HOST)/bin \
+	  -sitelib $(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml \
+	  -mandir $(INSTALL_PREFIX)/share/man \
 	  -with-toolbox
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make all
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make opt
@@ -203,19 +204,19 @@ stamp-install-all: stamp-build-findlib
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make install \
 						prefix=$(INSTALL_ROOT)
 	# Remove ocamlfind binary - we will use the native version.
-	rm $(INSTALL_ROOT)/usr/$(MINGW_HOST)/bin/ocamlfind
+	rm $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin/ocamlfind
 	# Remove findlib & num-top libs: if anything uses these we can
 	# add them back later.
-	rm -r $(INSTALL_ROOT)/usr/$(MINGW_HOST)/lib/ocaml/findlib
-	rm -r $(INSTALL_ROOT)/usr/$(MINGW_HOST)/lib/ocaml/num-top
+	rm -r $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/findlib
+	rm -r $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/num-top
 	# XXX topfind gets installed as %{_libdir}/ocaml - not sure why
 	# but delete it anyway.
-	rm -rf $(INSTALL_ROOT)/usr/lib/ocaml
+	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib/ocaml
 	# Override /etc/%{_mingw_target}-ocamlfind.conf with our
 	# own version.
 	rm $(INSTALL_ROOT)/etc/$(MINGW_HOST)-ocamlfind.conf
 	sed \
-	  -e "s,@libdir@,/usr/$(MINGW_HOST)/lib,g" \
+	  -e "s,@libdir@,$(INSTALL_PREFIX)/$(MINGW_HOST)/lib,g" \
 	  -e 's,@target@,$(MINGW_HOST),g' \
 	  < files/findlib/ocamlfind.conf.in \
 	  > $(INSTALL_ROOT)/etc/$(MINGW_HOST)-ocamlfind.conf
