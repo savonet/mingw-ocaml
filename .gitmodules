@@ -4,3 +4,6 @@
 [submodule "findlib"]
 	path = findlib
 	url = git://github.com/bmeurer/findlib.git
+[submodule "flexdll"]
+	path = flexdll
+	url = git://github.com/savonet/flexdll.git

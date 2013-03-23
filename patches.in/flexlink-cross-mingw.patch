@@ -1,0 +1,35 @@
+Index: mingw-ocaml/build/flexdll/Makefile
+===================================================================
+--- mingw-ocaml.orig/build/flexdll/Makefile	2013-03-23 06:26:44.629083711 -0500
++++ mingw-ocaml/build/flexdll/Makefile	2013-03-23 06:27:41.072845588 -0500
+@@ -1,8 +1,6 @@
+ VERSION = 0.30
+ all: flexlink.exe support
+ 
+-include $(shell cygpath -ad "$(shell ocamlopt -where)/Makefile.config")
+-
+ MINGW_PREFIX = i686-w64-mingw32
+ MINCC = $(MINGW_PREFIX)-gcc
+ 
+@@ -45,11 +43,7 @@
+ #OCAMLOPT = FLEXLINKFLAGS=-real-manifest ocamlopt
+ #LINKFLAGS = unix.cmxa
+ 
+-#ifeq ($(SYSTEM), win64)
+-#LINKFLAGS=
+-#else
+-LINKFLAGS = -ccopt "-link version_res.o"
+-#endif
++LINKFLAGS=
+ 
+ support:
+ 	for i in $(CHAINS); do $(MAKE) build_$$i ; done 
+@@ -62,7 +56,7 @@
+ 
+ OBJS = version.ml coff.ml cmdline.ml create_dll.ml reloc.ml
+ 
+-flexlink.exe: $(OBJS) version_res.o
++flexlink.exe: $(OBJS)
+ 	@echo Building flexlink.exe with TOOLCHAIN=$(TOOLCHAIN)
+ 	rm -f flexlink.exe
+ 	$(OCAMLOPT) -w -105 -o flexlink.exe $(LINKFLAGS) $(OBJS)

@@ -1,7 +1,4 @@
-flexdll-mingw-cross.patch
-flexdll-no-cygpath.patch
-flexdll-no-directory.patch
-flexdll-real-objdump.patch
+flexlink-cross-mingw.patch
 ocaml-disable-cmxs.patch
 ocaml-win32unix-path.patch
 ocaml-combined-Makefile.patch

@@ -9,9 +9,11 @@ BUILD_DIR      := build
 INSTALL_PREFIX := $(CURDIR)/binary
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
-BUILD_CC := gcc -m32
+BUILD_CC       := gcc -m32
+FLEXLINK_CHAIN := mingw
 else
-BUILD_CC := gcc
+BUILD_CC       := gcc
+FLEXLINK_CHAIN := mingw64
 endif
 
 all: install
@@ -21,11 +23,12 @@ $(BUILD_DIR):
 	cp -rf $(FLEXDLL_DIR)  $(OCAML_DIR) $(FINDLIB_DIR) $(BUILD_DIR)
 
 patches:
-	mkdir patches
-	find patches.in | grep patch | while read i; do \
+	mkdir -p patches
+	find patches.in | grep '.patch' | while read i; do \
 	  sed -e 's#@mingw_host@#$(MINGW_HOST)#g' < $$i > \
 	  `echo $$i | sed -e 's#patches.in#patches#'`; \
 	done
+	cp patches.in/series patches
 
 patch: stamp-quilt-patches
 
@@ -36,9 +39,7 @@ stamp-quilt-patches: patches $(BUILD_DIR)
 flexdll: stamp-build-flexdll
 
 stamp-build-flexdll: stamp-quilt-patches
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make TOOLCHAIN=mingw MINCC=$(MINGW_HOST)-gcc \
-	                                         CC=$(MINGW_HOST)-gcc flexlink.exe build_mingw
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && cp flexlink.exe flexlink
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe build_$(FLEXLINK_CHAIN)
 	touch stamp-build-flexdll
 
 mingw-ocaml: stamp-install-mingw-ocaml
@@ -82,6 +83,7 @@ stamp-prepare-cross-build: stamp-patch-mingw-include
 	  -e "s,@libdir@,/usr/$(MINGW_HOST)/lib/ocaml,g" \
 	  -e "s,@otherlibraries@,$(OTHER_LIBS),g" \
 	  -e "s,@flexdir@,$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR),g" \
+	  -e "s,@flexlink_mingw_chain@,$(FLEXLINK_CHAIN),g" \
 	  -e "s,@mingw_host@,$(MINGW_HOST),g" \
 	  < files/ocaml//Makefile-mingw.in > $(BUILD_DIR)/$(OCAML_DIR)/config/Makefile
 	# We're going to build in otherlibs/win32unix and otherlibs/win32graph
@@ -218,7 +220,7 @@ stamp-install-all: stamp-build-findlib
 	  > $(INSTALL_PREFIX)/etc/$(MINGW_HOST)-ocamlfind.conf
 	# Install flexlink binary
 	mkdir -p $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/flexdll
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_mingw.o flexdll_initer_mingw.o \
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_$(FLEXLINK_CHAIN).o flexdll_initer_$(FLEXLINK_CHAIN).o \
 	                                                     $(INSTALL_PREFIX)/usr/$(MINGW_HOST)/lib/ocaml/flexdll
 	# Symkink flexlink to flexlink.exe
 	rm -f $(INSTALL_PREFIX)/usr/bin/flexlink
