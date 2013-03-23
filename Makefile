@@ -224,9 +224,6 @@ stamp-install-all: stamp-build-findlib
 	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
 	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_$(FLEXLINK_CHAIN).o flexdll_initer_$(FLEXLINK_CHAIN).o \
 	                                                     $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
-	# Symkink flexlink to flexlink.exe
-	rm -f $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/flexlink
-	ln -s ../$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe $(INSTALL_ROOT)$(INSTALL_PREFIX)/bin/flexlink
 	# Nothing in /usr/$(MINGW_HOST)/lib/ocaml should 'a priori' be executable except flexlink.exe..
 	find $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml -type f -executable | grep -v flexlink.exe | while read i; do \
 	    chmod -x $$i; done
@@ -238,11 +235,14 @@ stamp-install-all: stamp-build-findlib
 	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
 	touch stamp-install-all
 
-root_install: # stamp-install-all
+root_install: stamp-install-all
 	find $(INSTALL_ROOT) -type f | sed -e s'#$(INSTALL_ROOT)##g' | while read i; do \
-	  echo mkdir -p `dirname $$i`; \
-	  echo cp $$i `dirname $$i`; \
+	  [ -d `dirname $$i` ] || mkdir -p `dirname $$i`; \
+	  cp $(INSTALL_ROOT)/$$i `dirname $$i`; \
 	done
+	# Symlink flexlink to flexlink.exe
+	rm -f $(INSTALL_PREFIX)/bin/flexlink
+	ln -s ../$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe $(INSTALL_PREFIX)/bin/flexlink
 
 clean:
 	rm -rf $(BUILD_DIR) $(INSTALL_ROOT) patches .pc/ stamp-*
