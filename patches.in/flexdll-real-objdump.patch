@@ -1,0 +1,13 @@
+Index: mingw-ocaml/build/flexdll/reloc.ml
+===================================================================
+--- mingw-ocaml.orig/build/flexdll/reloc.ml	2013-03-22 18:18:46.651422141 -0500
++++ mingw-ocaml/build/flexdll/reloc.ml	2013-03-22 18:18:46.631432142 -0500
+@@ -436,7 +436,7 @@
+       failwith "Creation of import library not supported for this toolchain"
+   | `CYGWIN | `MINGW ->
+       let dmp = temp_file "dyndll" ".dmp" in
+-      if cmd_verbose (Printf.sprintf "objdump -p %s > %s" fn dmp) <> 0
++      if cmd_verbose (Printf.sprintf "@mingw_host@-objdump -p %s > %s" fn dmp) <> 0
+       then failwith "Error while extracting exports from a DLL";
+       parse_dll_exports dmp
+ 

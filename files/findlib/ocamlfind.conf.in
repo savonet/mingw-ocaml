@@ -1,0 +1,7 @@
+stdlib="@libdir@/ocaml"
+ldconf="@libdir@/ocaml/ld.conf"
+destdir="@libdir@/ocaml"
+path="@libdir@/ocaml"
+ocamlc="@target@-ocamlc"
+ocamlopt="@target@-ocamlopt"
+ocamldep="@target@-ocamldep"

@@ -1,0 +1,22 @@
+Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt
+===================================================================
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-22 18:31:50.522234841 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-22 18:31:50.502244843 -0500
+@@ -35,7 +35,7 @@
+ allopt: lib$(LIBNAME).$(A) $(LIBNAME).cmxa $(LIBNAME).cmxs $(CMIFILES)
+ 
+ $(LIBNAME).cma: $(CAMLOBJS)
+-	$(MKLIB) -o $(LIBNAME) -ocamlc "..\\..\\boot\\ocamlrun ..\\..\\ocamlc" -linkall $(CAMLOBJS) $(LINKOPTS)
++	$(MKLIB) -o $(LIBNAME) -ocamlc "../../boot/ocamlrun ../../ocamlc" -linkall $(CAMLOBJS) $(LINKOPTS)
+ 
+ lib$(LIBNAME).$(A): $(COBJS)
+ 	$(MKLIB) -o $(LIBNAME) $(COBJS) $(LDOPTS)
+@@ -47,7 +47,7 @@
+ 
+ 
+ $(LIBNAME).cmxa: $(CAMLOBJS:.cmo=.cmx)
+-	$(MKLIB) -o $(LIBNAME)nat -ocamlopt "..\\..\\boot\\ocamlrun ..\\..\\ocamlopt" -linkall $(CAMLOBJS:.cmo=.cmx) $(LINKOPTS)
++	$(MKLIB) -o $(LIBNAME)nat -ocamlopt "../../boot/ocamlrun ../../ocamlopt" -linkall $(CAMLOBJS:.cmo=.cmx) $(LINKOPTS)
+ 	mv $(LIBNAME)nat.cmxa $(LIBNAME).cmxa
+ 	mv $(LIBNAME)nat.$(A) $(LIBNAME).$(A)
+ 

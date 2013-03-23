@@ -1,9 +1,6 @@
 [submodule "ocaml"]
 	path = ocaml
 	url = git://github.com/ocaml/ocaml.git
-[submodule "dlfcn-win32"]
-	path = dlfcn-win32
-	url = git://github.com/savonet/dlfcn-win32.git
 [submodule "findlib"]
 	path = findlib
 	url = git://github.com/bmeurer/findlib.git

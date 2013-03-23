@@ -3,8 +3,8 @@ patch disables them.
 
 Index: mingw-ocaml/build/ocaml/otherlibs/Makefile.shared
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/otherlibs/Makefile.shared	2013-03-22 13:56:41.009049552 -0500
-+++ mingw-ocaml/build/ocaml/otherlibs/Makefile.shared	2013-03-22 13:56:40.989059553 -0500
+--- mingw-ocaml.orig/build/ocaml/otherlibs/Makefile.shared	2013-03-22 18:18:47.754870103 -0500
++++ mingw-ocaml/build/ocaml/otherlibs/Makefile.shared	2013-03-22 18:18:47.734880104 -0500
 @@ -42,7 +42,8 @@
  
  all: lib$(CLIBNAME).$(A) $(LIBNAME).cma $(CMIFILES)

@@ -1,3 +1,7 @@
+flexdll-mingw-cross.patch
+flexdll-no-cygpath.patch
+flexdll-no-directory.patch
+flexdll-real-objdump.patch
 ocaml-disable-cmxs.patch
 ocaml-win32unix-path.patch
 ocaml-combined-Makefile.patch
@@ -6,5 +10,7 @@ ocaml-no-stdlib-dir.patch
 ocaml-fix-opt-link-opts.patch
 ocaml-run-ranlib-on-threads.patch
 ocaml-force-os-type.patch
+ocaml-i386-profiling.patch
+ocaml-win32-compat.patch
+ocaml-fix-ocamlrun-path.patch
 findlib-fix-camlp4.patch
-dlfcn-win32-clean-exit.patch

@@ -2,3 +2,5 @@
 .*sw*
 stamp-*
 build/
+binary/
+patches/
