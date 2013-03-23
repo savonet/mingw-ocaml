@@ -28,11 +28,11 @@ by typing, as root:
 
   # make root_install
 
-If you are not already familliar with wingw64,
-i686-w64-mingw32 reffers to 32 bits windows cross-compiling
+If you are not already familiar with mingw64,
+i686-w64-mingw32 refers to 32 bits windows cross-compiling
 tools and x86_64-w64 to 64 bits windows cross-compiling
 tools. In the following, we use i686-w64-mingw32 but
-all instructions apply to x86_64-w64.
+all instructions apply to x86_64-w64 as well.
 
 The compiler also includes a support for ocamlfind. In 
 order to use it, you should set the environment variable 
