@@ -28,6 +28,10 @@ by typing, as root:
 
   # make root_install
 
+Or:
+
+  # make root_install MINGW_HOST=x86_64-w64-mingw32
+
 If you are not already familiar with mingw64,
 i686-w64-mingw32 refers to 32 bits windows cross-compiling
 tools and x86_64-w64 to 64 bits windows cross-compiling
@@ -40,13 +44,12 @@ OCAMLFIND_CONF to /etc/i686-w64-mingw32-ocamlfind.conf:
   
   export OCAMLFIND_CONF=/etc/i686-w64-mingw32-ocamlfind.conf
 
-Eventually, when the build system uses the autoconf tool, 
-you can build the C libraries with the following options:
+When the build system uses the autoconf tool, you can build 
+the C libraries with the following options:
+
   ./configure --prefix=/usr/i686-w64-mingw32 --host=i686-w64-mingw32
 
-It is convenient to install those libs directly in /usr/i686-w64-mingw32, 
-though not very clean. However, it seems that /usr/i686-w64-mingw32/local is 
-not recognized by the mingw32 cross-compiler.
+It is convenient to install those libs directly in /usr/i686-w64-mingw32.
 
 Additionally, if your configuration script uses pkg-config
 to detect libraries, you may want to set the PKG_CONFIG_PATH
