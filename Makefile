@@ -13,9 +13,13 @@ PATH           := $(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR):$(PATH)
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
 FLEXLINK_CHAIN := mingw
+ARCH           := i386
+MINGW_SYSTEM   := mingw
 else
 BUILD_CC       := gcc
 FLEXLINK_CHAIN := mingw64
+ARCH           := amd64
+MINGW_SYSTEM   := mingw64
 endif
 
 all: install
@@ -86,6 +90,8 @@ stamp-prepare-cross-build: stamp-patch-mingw-include
 	  -e "s,@bindir@,/usr/$(MINGW_HOST)/bin,g" \
 	  -e "s,@libdir@,/usr/$(MINGW_HOST)/lib/ocaml,g" \
 	  -e "s,@otherlibraries@,$(OTHER_LIBS),g" \
+	  -e "s,@arch@,$(ARCH),g" \
+	  -e "s,@mingw_system@,$(MINGW_SYSTEM),g" \
 	  -e "s,@flexdir@,$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR),g" \
 	  -e "s,@flexlink_mingw_chain@,$(FLEXLINK_CHAIN),g" \
 	  -e "s,@mingw_host@,$(MINGW_HOST),g" \
