@@ -26,11 +26,11 @@ folder. They wil not be functional unless you install
 them all in your system root though. You can do that 
 by typing, as root:
 
-  # make root_install
+  # make install
 
 Or:
 
-  # make root_install MINGW_HOST=x86_64-w64-mingw32
+  # make install MINGW_HOST=x86_64-w64-mingw32
 
 If you are not already familiar with mingw64,
 i686-w64-mingw32 refers to 32 bits windows cross-compiling

@@ -1,4 +1,4 @@
-.PHONY: all clean patch flexdll mingw-ocaml install
+.PHONY: all clean patch flexdll mingw-ocaml binary install
 
 MINGW_HOST     := i686-w64-mingw32
 FLEXDLL_DIR    := flexdll
@@ -8,7 +8,7 @@ OTHER_LIBS     := win32unix str num dynlink bigarray systhreads win32graph
 BUILD_DIR      := build
 INSTALL_ROOT   := $(CURDIR)/binary
 INSTALL_PREFIX := /usr
-PATH           := $(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR):$(PATH)
+PATH           := $(PATH):$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR)
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
@@ -22,7 +22,7 @@ ARCH           := amd64
 MINGW_SYSTEM   := mingw64
 endif
 
-all: install
+all: binary
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -50,7 +50,7 @@ stamp-build-flexdll: stamp-quilt-patches
 	ln -s flexlink.exe $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	touch stamp-build-flexdll
 
-mingw-ocaml: stamp-install-mingw-ocaml
+mingw-ocaml: stamp-binary-mingw-ocaml
 
 stamp-build-ocamlcore: stamp-quilt-patches
 	# Build native ocamlrun and ocamlc which contain the
@@ -140,7 +140,7 @@ stamp-build-mingw-ocaml: stamp-build-flexdll stamp-prepare-cross-build
 	cd $(BUILD_DIR)/$(OCAML_DIR) && make -C tools
 	touch stamp-build-mingw-ocaml
 
-stamp-install-mingw-ocaml: stamp-build-mingw-ocaml
+stamp-binary-mingw-ocaml: stamp-build-mingw-ocaml
 	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/threads
 	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/stublibs
 	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
@@ -178,11 +178,11 @@ stamp-install-mingw-ocaml: stamp-build-mingw-ocaml
 	done
 	# We do not need this.
 	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/compiler-libs
-	touch stamp-install-mingw-ocaml
+	touch stamp-binary-mingw-ocaml
 
 findlib: stamp-build-findlib
 
-stamp-build-findlib: stamp-install-mingw-ocaml
+stamp-build-findlib: stamp-binary-mingw-ocaml
 	cd $(BUILD_DIR)/$(FINDLIB_DIR)/tools/extract_args && make
 	$(BUILD_DIR)/$(FINDLIB_DIR)/tools/extract_args/extract_args \
 	  -o $(BUILD_DIR)/$(FINDLIB_DIR)/src/findlib/ocaml_args.ml \
@@ -201,9 +201,9 @@ stamp-build-findlib: stamp-install-mingw-ocaml
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make opt
 	touch stamp-build-findlib
 
-install: stamp-install-all
+binary: stamp-binary-all
 
-stamp-install-all: stamp-build-findlib
+stamp-binary-all: stamp-build-findlib
 	# Install findlib
 	# Create this dir to please install..
 	mkdir -p $(INSTALL_ROOT)$(INSTALL_PREFIX)/lib/ocaml
@@ -239,9 +239,9 @@ stamp-install-all: stamp-build-findlib
 	  chmod +x $$i; done
 	# Remove rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin: all binaries should be prefixed and living in /usr/bin..
 	rm -rf $(INSTALL_ROOT)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
-	touch stamp-install-all
+	touch stamp-binary-all
 
-root_install: stamp-install-all
+install: stamp-binary-all
 	find $(INSTALL_ROOT) -type f | sed -e s'#$(INSTALL_ROOT)##g' | while read i; do \
 	  [ -d `dirname $$i` ] || mkdir -p `dirname $$i`; \
 	  cp -f $(INSTALL_ROOT)/$$i `dirname $$i`; \
