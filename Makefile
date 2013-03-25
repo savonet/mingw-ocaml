@@ -244,7 +244,7 @@ stamp-install-all: stamp-build-findlib
 root_install: stamp-install-all
 	find $(INSTALL_ROOT) -type f | sed -e s'#$(INSTALL_ROOT)##g' | while read i; do \
 	  [ -d `dirname $$i` ] || mkdir -p `dirname $$i`; \
-	  cp $(INSTALL_ROOT)/$$i `dirname $$i`; \
+	  cp -f $(INSTALL_ROOT)/$$i `dirname $$i`; \
 	done
 	# Symlink flexlink to flexlink.exe
 	rm -f $(INSTALL_PREFIX)/bin/flexlink
