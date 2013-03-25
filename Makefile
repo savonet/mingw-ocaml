@@ -1,4 +1,4 @@
-.PHONY: all clean patch flexdll mingw-ocaml binary install
+.PHONY: all dist clean patch flexdll mingw-ocaml findlib binary install
 
 MINGW_HOST     := i686-w64-mingw32
 FLEXDLL_DIR    := flexdll
@@ -21,6 +21,8 @@ FLEXLINK_CHAIN := mingw64
 ARCH           := amd64
 MINGW_SYSTEM   := mingw64
 endif
+
+DISTFILES := LICENSE Makefile README files findlib flexdll ocaml patches.in
 
 all: binary
 
@@ -252,3 +254,10 @@ install: stamp-binary-all
 
 clean:
 	rm -rf $(BUILD_DIR) $(INSTALL_ROOT) patches .pc/ stamp-*
+
+dist:
+	mkdir mingw-ocaml
+	cp -rf $(DISTFILES) mingw-ocaml
+	find mingw-ocaml -name .git | xargs rm -rf
+	tar cvzf mingw-ocaml.tar.gz mingw-ocaml
+	rm -rf mingw-ocaml 

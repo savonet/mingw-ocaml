@@ -4,3 +4,4 @@ stamp-*
 build/
 binary/
 patches/
+mingw-ocaml*
