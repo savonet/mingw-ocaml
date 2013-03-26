@@ -94,7 +94,7 @@ stamp-prepare-cross-build: stamp-patch-mingw-include
 	  -e "s,@arch@,$(ARCH),g" \
 	  -e "s,@mingw_system@,$(MINGW_SYSTEM),g" \
 	  -e "s,@flexdir@,$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR),g" \
-	  -e "s,@flexlink_mingw_chain@,$(FLEXLINK_CHAIN),g" \
+	  -e "s,@flexlink_mingw_chain@,$(MINGW_SYSTEM),g" \
 	  -e "s,@mingw_host@,$(MINGW_HOST),g" \
 	  < files/ocaml//Makefile-mingw.in > $(BUILD_DIR)/$(OCAML_DIR)/config/Makefile
 	# We're going to build in otherlibs/win32unix and otherlibs/win32graph
