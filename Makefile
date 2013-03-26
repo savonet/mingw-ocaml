@@ -13,12 +13,10 @@ PATH           := $(PATH):$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR)
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
-FLEXLINK_CHAIN := mingw
 ARCH           := i386
 MINGW_SYSTEM   := mingw
 else
 BUILD_CC       := gcc
-FLEXLINK_CHAIN := mingw64
 ARCH           := amd64
 MINGW_SYSTEM   := mingw64
 endif
@@ -48,7 +46,7 @@ stamp-quilt-patches: patches $(BUILD_DIR)
 flexdll: stamp-build-flexdll
 
 stamp-build-flexdll: stamp-quilt-patches
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe build_$(FLEXLINK_CHAIN)
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe build_mingw build_mingw64
 	rm -f $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	ln -s flexlink.exe $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	touch stamp-build-flexdll
@@ -230,9 +228,10 @@ stamp-binary-all: stamp-build-findlib
 	  < files/findlib/ocamlfind.conf.in \
 	  > $(BINARY_DIR)/etc/$(MINGW_HOST)-ocamlfind.conf
 	# Install flexlink binary
-	mkdir -p $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_$(FLEXLINK_CHAIN).o flexdll_initer_$(FLEXLINK_CHAIN).o \
-	                                                     $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml/flexdll
+	mkdir -p $(BINARY_DIR)$(INSTALL_PREFIX)/lib/flexdll
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_mingw.o flexdll_initer_mingw.o \
+	                                                               flexdll_mingw64.o flexdll_initer_mingw64.o
+	                                                     $(BINARY_DIR)$(INSTALL_PREFIX)/lib/flexdll
 	# Nothing in /usr/$(MINGW_HOST)/lib/ocaml should 'a priori' be executable except flexlink.exe..
 	find $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml -type f -executable | grep -v flexlink.exe | while read i; do \
 	    chmod -x $$i; done
@@ -251,7 +250,7 @@ install: stamp-binary-all
 	done
 	# Symlink flexlink to flexlink.exe
 	rm -f $(INSTALL_DIR)$(INSTALL_PREFIX)/bin/flexlink
-	ln -s ../$(MINGW_HOST)/lib/ocaml/flexdll/flexlink.exe $(INSTALL_DIR)$(INSTALL_PREFIX)/bin/flexlink
+	ln -s ../lib/flexdll/flexlink.exe $(INSTALL_DIR)$(INSTALL_PREFIX)/bin/flexlink
 
 clean:
 	rm -rf $(BUILD_DIR) $(BINARY_DIR) $(INSTALL_DIR) patches .pc/ stamp-*

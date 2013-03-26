@@ -28,10 +28,6 @@ by typing, as root:
 
   # make install
 
-Or:
-
-  # make install MINGW_HOST=x86_64-w64-mingw32
-
 If you are not already familiar with mingw64,
 i686-w64-mingw32 refers to 32 bits windows cross-compiling
 tools and x86_64-w64 to 64 bits windows cross-compiling
