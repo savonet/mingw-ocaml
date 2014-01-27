@@ -8,7 +8,7 @@ Index: mingw-ocaml/build/flexdll/Makefile
  
 -include $(shell cygpath -ad "$(shell ocamlopt -where)/Makefile.config")
 -
- MINGW_PREFIX = @mingw_host@
+ MINGW_PREFIX = i686-w64-mingw32
  MINCC = $(MINGW_PREFIX)-gcc
  
 @@ -45,11 +43,7 @@
