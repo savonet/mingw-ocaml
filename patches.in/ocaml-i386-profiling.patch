@@ -1,14 +1,14 @@
 Index: mingw-ocaml/build/ocaml/asmrun/i386.S
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/asmrun/i386.S	2013-03-22 16:08:07.554296392 -0500
-+++ mingw-ocaml/build/ocaml/asmrun/i386.S	2013-03-22 17:20:07.749047630 -0500
-@@ -62,6 +62,9 @@
-         popl %edx; popl %ecx; popl %eax; popl %ebp
- #define PROFILE_C \
-         pushl %ebp; movl %esp, %ebp; call mcount; popl %ebp
+--- mingw-ocaml.orig/build/ocaml/asmrun/i386.S	2014-01-26 18:46:40.988419898 -0600
++++ mingw-ocaml/build/ocaml/asmrun/i386.S	2014-01-26 18:47:56.407180671 -0600
+@@ -75,6 +75,9 @@
+         movl %esp, %ebp; \
+         call mcount; \
+         popl %ebp; CFI_ADJUST(-4)
 +#elif defined(SYS_mingw)
 +#define PROFILE_CAML
 +#define PROFILE_C
  #elif defined(SYS_bsd_elf)
  #define PROFILE_CAML \
-         pushl %ebp; movl %esp, %ebp; pushl %eax; pushl %ecx; pushl %edx; \
+         pushl %ebp; CFI_ADJUST(4); \

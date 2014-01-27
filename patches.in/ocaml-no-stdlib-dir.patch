@@ -4,9 +4,9 @@ code so this works around it.
 
 Index: mingw-ocaml/build/ocaml/byterun/dynlink.c
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/byterun/dynlink.c	2013-03-22 13:57:37.908583643 -0500
-+++ mingw-ocaml/build/ocaml/byterun/dynlink.c	2013-03-22 13:57:37.888593644 -0500
-@@ -80,7 +80,12 @@
+--- mingw-ocaml.orig/build/ocaml/byterun/dynlink.c	2014-01-26 18:45:46.700191051 -0600
++++ mingw-ocaml/build/ocaml/byterun/dynlink.c	2014-01-26 18:45:46.668193274 -0600
+@@ -78,7 +78,12 @@
  
    stdlib = getenv("OCAMLLIB");
    if (stdlib == NULL) stdlib = getenv("CAMLLIB");

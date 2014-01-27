@@ -1,8 +1,8 @@
 Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-22 13:57:38.144465635 -0500
-+++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt	2013-03-22 13:57:38.124475636 -0500
-@@ -72,6 +72,7 @@
+--- mingw-ocaml.orig/build/ocaml/otherlibs/systhreads/Makefile.nt	2014-01-26 18:46:13.010363423 -0600
++++ mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt	2014-01-26 18:46:12.966366479 -0600
+@@ -74,6 +74,7 @@
  install:
  	cp dllthreads.dll $(STUBLIBDIR)/dllthreads.dll
  	cp libthreads.$(A) $(LIBDIR)/libthreads.$(A)
@@ -10,7 +10,7 @@ Index: mingw-ocaml/build/ocaml/otherlibs/systhreads/Makefile.nt
  	mkdir -p $(LIBDIR)/threads
  	cp $(CMIFILES) threads.cma $(LIBDIR)/threads
  	rm -f $(LIBDIR)/threads/stdlib.cma
-@@ -79,6 +80,7 @@
+@@ -81,6 +82,7 @@
  
  installopt:
  	cp libthreadsnat.$(A) $(LIBDIR)/libthreadsnat.$(A)

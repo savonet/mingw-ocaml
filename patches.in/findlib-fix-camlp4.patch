@@ -1,7 +1,7 @@
 Index: mingw-ocaml/build/findlib/configure
 ===================================================================
---- mingw-ocaml.orig/build/findlib/configure	2013-03-22 13:57:38.384345627 -0500
-+++ mingw-ocaml/build/findlib/configure	2013-03-22 13:57:38.364355628 -0500
+--- mingw-ocaml.orig/build/findlib/configure	2014-01-26 18:51:41.231560836 -0600
++++ mingw-ocaml/build/findlib/configure	2014-01-26 18:51:41.199563060 -0600
 @@ -113,6 +113,7 @@
  ocamlfind_bin=""
  ocamlfind_man=""
@@ -10,17 +10,17 @@ Index: mingw-ocaml/build/findlib/configure
  ocamlfind_config=""
  with_toolbox=0
  with_topfind=1
-@@ -132,6 +133,9 @@
+@@ -133,6 +134,9 @@
          -config) ocamlfind_config=$2
  	         shift 2
  		 ;;
 +        -camlp4bin) camlp4bin=$2
 +                 shift 2
 +                 ;;
- 	-cygpath) system=mingw
- 	         shift
- 		 ;;
-@@ -415,8 +419,8 @@
+         -no-custom) custom=
+                 shift
+                 ;;
+@@ -427,8 +431,8 @@
  
  # Check on camlp4:
  
@@ -31,7 +31,7 @@ Index: mingw-ocaml/build/findlib/configure
      if [ ${use_cygpath} -gt 0 ]; then
  	camlp4_dir=`echo x | env USE_CYGPATH=1 tools/patch x "$camlp4_dir"`
          # This makes camlp4_dir a windows path
-@@ -424,14 +428,14 @@
+@@ -436,14 +440,14 @@
  	# Must double the backslahes
  	camlp4_dir="$(echo "${camlp4_dir}" | sed -e 's;\\;\\\\;g')"
      fi

@@ -1,14 +1,14 @@
 Index: mingw-ocaml/build/flexdll/Makefile
 ===================================================================
---- mingw-ocaml.orig/build/flexdll/Makefile	2013-03-23 06:26:44.629083711 -0500
-+++ mingw-ocaml/build/flexdll/Makefile	2013-03-23 06:27:41.072845588 -0500
+--- mingw-ocaml.orig/build/flexdll/Makefile	2014-01-26 18:40:56.688334315 -0600
++++ mingw-ocaml/build/flexdll/Makefile	2014-01-26 18:40:56.656336537 -0600
 @@ -1,8 +1,6 @@
  VERSION = 0.30
  all: flexlink.exe support
  
 -include $(shell cygpath -ad "$(shell ocamlopt -where)/Makefile.config")
 -
- MINGW_PREFIX = i686-w64-mingw32
+ MINGW_PREFIX = @mingw_host@
  MINCC = $(MINGW_PREFIX)-gcc
  
 @@ -45,11 +43,7 @@

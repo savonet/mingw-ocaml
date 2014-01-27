@@ -4,9 +4,9 @@ in the Sys module.
 
 Index: mingw-ocaml/build/ocaml/utils/config.mlp
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/utils/config.mlp	2013-03-22 13:57:38.268403632 -0500
-+++ mingw-ocaml/build/ocaml/utils/config.mlp	2013-03-22 13:57:38.244415632 -0500
-@@ -86,11 +86,7 @@
+--- mingw-ocaml.orig/build/ocaml/utils/config.mlp	2014-01-26 18:46:25.853471267 -0600
++++ mingw-ocaml/build/ocaml/utils/config.mlp	2014-01-26 18:46:25.825473212 -0600
+@@ -85,11 +85,7 @@
  let ext_lib = "%%EXT_LIB%%"
  let ext_dll = "%%EXT_DLL%%"
  
@@ -27,4 +27,4 @@ Index: mingw-ocaml/build/ocaml/utils/config.mlp
 +  p "os_type" "Win32";
    p "default_executable_name" default_executable_name;
    p_bool "systhread_supported" systhread_supported;
-   flush oc;
+ 
