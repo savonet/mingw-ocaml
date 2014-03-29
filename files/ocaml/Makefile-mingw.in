@@ -29,6 +29,7 @@ NATDYNLINK=true
 NATDYNLINKOPTS=
 SYSLIB=-l$(1)
 RUNTIMED=noruntimed
+WITH_FRAME_POINTERS=false
 #ml let syslib x = "-l"^x;;
 
 ### How to build a static library

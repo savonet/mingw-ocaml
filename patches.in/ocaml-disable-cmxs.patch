@@ -3,9 +3,9 @@ patch disables them.
 
 Index: mingw-ocaml/build/ocaml/otherlibs/Makefile.shared
 ===================================================================
---- mingw-ocaml.orig/build/ocaml/otherlibs/Makefile.shared	2013-03-22 18:18:47.754870103 -0500
-+++ mingw-ocaml/build/ocaml/otherlibs/Makefile.shared	2013-03-22 18:18:47.734880104 -0500
-@@ -42,7 +42,8 @@
+--- mingw-ocaml.orig/build/ocaml/otherlibs/Makefile.shared	2014-01-26 18:40:57.040309870 -0600
++++ mingw-ocaml/build/ocaml/otherlibs/Makefile.shared	2014-01-26 18:40:57.008312092 -0600
+@@ -40,7 +40,8 @@
  
  all: lib$(CLIBNAME).$(A) $(LIBNAME).cma $(CMIFILES)
  
@@ -14,10 +14,10 @@ Index: mingw-ocaml/build/ocaml/otherlibs/Makefile.shared
 +# $(LIBNAME).$(CMXS)
  
  $(LIBNAME).cma: $(CAMLOBJS)
- 	$(MKLIB) -o $(LIBNAME) -oc $(CLIBNAME) -ocamlc '$(CAMLC)' -linkall $(CAMLOBJS) $(LINKOPTS)
+ 	$(MKLIB) -o $(LIBNAME) -oc $(CLIBNAME) -ocamlc '$(CAMLC)' -linkall \
 @@ -50,8 +51,8 @@
- $(LIBNAME).cmxa: $(CAMLOBJS_NAT)
- 	$(MKLIB) -o $(LIBNAME) -oc $(CLIBNAME) -ocamlopt '$(CAMLOPT)' -linkall $(CAMLOBJS_NAT) $(LINKOPTS)
+ 	$(MKLIB) -o $(LIBNAME) -oc $(CLIBNAME) -ocamlopt '$(CAMLOPT)' -linkall \
+ 	         $(CAMLOBJS_NAT) $(LINKOPTS)
  
 -$(LIBNAME).cmxs: $(LIBNAME).cmxa lib$(CLIBNAME).$(A)
 -	$(CAMLOPT) -shared -o $(LIBNAME).cmxs -I . $(LIBNAME).cmxa

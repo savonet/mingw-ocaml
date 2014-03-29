@@ -6,4 +6,4 @@
 	url = git://github.com/savonet/findlib.git
 [submodule "flexdll"]
 	path = flexdll
-	url = git://github.com/savonet/flexdll.git
+	url = git@github.com:alainfrisch/flexdll.git
