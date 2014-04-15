@@ -1,8 +1,8 @@
 Index: mingw-ocaml/build/flexdll/reloc.ml
 ===================================================================
---- mingw-ocaml.orig/build/flexdll/reloc.ml	2014-01-26 18:40:56.852322925 -0600
-+++ mingw-ocaml/build/flexdll/reloc.ml	2014-01-26 18:40:56.828324592 -0600
-@@ -82,7 +82,9 @@
+--- mingw-ocaml.orig/build/flexdll/reloc.ml
++++ mingw-ocaml/build/flexdll/reloc.ml
+@@ -81,7 +81,9 @@ let get_output ?(use_bash = false) cmd =
        r
  
  let get_output1 ?use_bash cmd =

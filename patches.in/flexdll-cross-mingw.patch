@@ -1,7 +1,7 @@
 Index: mingw-ocaml/build/flexdll/Makefile
 ===================================================================
---- mingw-ocaml.orig/build/flexdll/Makefile	2014-01-27 06:33:36.326284060 -0600
-+++ mingw-ocaml/build/flexdll/Makefile	2014-01-27 06:33:36.302285732 -0600
+--- mingw-ocaml.orig/build/flexdll/Makefile
++++ mingw-ocaml/build/flexdll/Makefile
 @@ -1,8 +1,6 @@
  VERSION = 0.31
  all: flexlink.exe support
@@ -11,7 +11,7 @@ Index: mingw-ocaml/build/flexdll/Makefile
  MINGW_PREFIX = i686-w64-mingw32
  MINCC = $(MINGW_PREFIX)-gcc
  
-@@ -45,11 +43,7 @@
+@@ -45,11 +43,7 @@ OCAMLOPT = ocamlopt
  #OCAMLOPT = FLEXLINKFLAGS=-real-manifest ocamlopt
  #LINKFLAGS = unix.cmxa
  
@@ -24,7 +24,7 @@ Index: mingw-ocaml/build/flexdll/Makefile
  
  support:
  	for i in $(CHAINS); do $(MAKE) build_$$i ; done 
-@@ -62,7 +56,7 @@
+@@ -62,7 +56,7 @@ build_mingw64: flexdll_mingw64.o flexdll
  
  OBJS = version.ml coff.ml cmdline.ml create_dll.ml reloc.ml
  
@@ -33,3 +33,17 @@ Index: mingw-ocaml/build/flexdll/Makefile
  	@echo Building flexlink.exe with TOOLCHAIN=$(TOOLCHAIN)
  	rm -f flexlink.exe
  	$(OCAMLOPT) -w -105 -o flexlink.exe $(LINKFLAGS) $(OBJS)
+Index: mingw-ocaml/build/flexdll/reloc.ml
+===================================================================
+--- mingw-ocaml.orig/build/flexdll/reloc.ml
++++ mingw-ocaml/build/flexdll/reloc.ml
+@@ -28,8 +28,7 @@ let flexdir =
+   try
+     let s = Sys.getenv "FLEXDIR" in
+     if s = "" then raise Not_found else s
+-  with Not_found ->
+-    Filename.dirname Sys.executable_name
++  with Not_found -> "@prefix@/@mingw_host@/lib/flexdll"
+ 
+ (* Temporary files *)
+ 

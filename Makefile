@@ -10,6 +10,15 @@ BINARY_DIR     := $(CURDIR)/binary
 INSTALL_DIR    := # install at root
 INSTALL_PREFIX := /usr
 PATH           := $(PATH):$(CURDIR)/$(BUILD_DIR)/$(FLEXDLL_DIR)
+SED            := $(shell which gsed || which sed)
+
+ifeq ($(which x86_64-w64-mingw32-gcc),)
+FLEX_TARGET    := build_mingw
+FLEX_FILES     := flexdll_mingw.o flexdll_initer_mingw.o
+else
+FLEX_TARGET    := build_mingw build_mingw64
+FLEX_FILES     := flexdll_mingw.o flexdll_initer_mingw.o flexdll_mingw64.o flexdll_initer_mingw64.o
+endif
 
 ifeq ($(MINGW_HOST),i686-w64-mingw32)
 BUILD_CC       := gcc -m32
@@ -32,8 +41,9 @@ $(BUILD_DIR):
 patches:
 	mkdir -p patches
 	find patches.in | grep '.patch' | while read i; do \
-	  sed -e 's#@mingw_host@#$(MINGW_HOST)#g' < $$i > \
-	  `echo $$i | sed -e 's#patches.in#patches#'`; \
+	  $(SED) -e 's#@mingw_host@#$(MINGW_HOST)#g' \
+		       -e 's#@prefix@#$(INSTALL_PREFIX)#g' < $$i > \
+	  `echo $$i | $(SED) -e 's#patches.in#patches#'`; \
 	done
 	cp patches.in/series patches
 
@@ -46,7 +56,7 @@ stamp-quilt-patches: patches $(BUILD_DIR)
 flexdll: stamp-build-flexdll
 
 stamp-build-flexdll: stamp-quilt-patches
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe build_mingw build_mingw64
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && make flexlink.exe $(FLEX_TARGET)
 	rm -f $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	ln -s flexlink.exe $(BUILD_DIR)/$(FLEXDLL_DIR)/flexlink
 	touch stamp-build-flexdll
@@ -86,10 +96,10 @@ stamp-prepare-cross-build: stamp-patch-mingw-include
 	cp -f $(BUILD_DIR)/$(OCAML_DIR)/config/s-nt.h $(BUILD_DIR)/$(OCAML_DIR)/config/s.h
 	# config/Makefile is a custom one which we supply.
 	rm -f $(BUILD_DIR)/$(OCAML_DIR)/config/Makefile
-	sed \
-	  -e "s,@prefix@,/usr/$(MINGW_HOST),g" \
-	  -e "s,@bindir@,/usr/$(MINGW_HOST)/bin,g" \
-	  -e "s,@libdir@,/usr/$(MINGW_HOST)/lib/ocaml,g" \
+	$(SED) \
+	  -e "s,@prefix@,$(INSTALL_PREFIX)/$(MINGW_HOST),g" \
+	  -e "s,@bindir@,$(INSTALL_PREFIX)/$(MINGW_HOST)/bin,g" \
+	  -e "s,@libdir@,$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml,g" \
 	  -e "s,@otherlibraries@,$(OTHER_LIBS),g" \
 	  -e "s,@arch@,$(ARCH),g" \
 	  -e "s,@mingw_system@,$(MINGW_SYSTEM),g" \
@@ -206,8 +216,9 @@ binary: stamp-binary-all
 
 stamp-binary-all: stamp-build-findlib
 	# Install findlib
-	# Create this dir to please install..
-	mkdir -p $(BINARY_DIR)$(INSTALL_PREFIX)/lib/ocaml
+	# Create these dirs to please install..
+	mkdir -p $(BINARY_DIR)/usr/lib/ocaml
+	mkdir -p $(BINARY_DIR)/usr/local/lib/ocaml
 	cd $(BUILD_DIR)/$(FINDLIB_DIR) && make install \
 						prefix=$(BINARY_DIR)
 	# Remove ocamlfind binary - we will use the native version.
@@ -222,29 +233,28 @@ stamp-binary-all: stamp-build-findlib
 	# Override /etc/%{_mingw_target}-ocamlfind.conf with our
 	# own version.
 	rm $(BINARY_DIR)/etc/$(MINGW_HOST)-ocamlfind.conf
-	sed \
+	$(SED) \
 	  -e "s,@libdir@,$(INSTALL_PREFIX)/$(MINGW_HOST)/lib,g" \
 	  -e 's,@target@,$(MINGW_HOST),g' \
 	  < files/findlib/ocamlfind.conf.in \
 	  > $(BINARY_DIR)/etc/$(MINGW_HOST)-ocamlfind.conf
 	# Install flexlink binary
 	mkdir -p $(BINARY_DIR)$(INSTALL_PREFIX)/lib/flexdll
-	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe flexdll_mingw.o flexdll_initer_mingw.o \
-	                                                               flexdll_mingw64.o flexdll_initer_mingw64.o \
+	cd $(BUILD_DIR)/$(FLEXDLL_DIR) && install -m 0755 flexlink.exe $(FLEX_FILES) \
 	                                                     $(BINARY_DIR)$(INSTALL_PREFIX)/lib/flexdll
-	# Nothing in /usr/$(MINGW_HOST)/lib/ocaml should 'a priori' be executable except flexlink.exe..
+	# Nothing in $(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml should 'a priori' be executable except flexlink.exe..
 	find $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/lib/ocaml -type f -executable | grep -v flexlink.exe | while read i; do \
 	    chmod -x $$i; done
-	# Now make all script with #!/usr/bin/ocamlrun executables
-	grep -r -l '#!/usr/$(MINGW_HOST)/bin/ocamlrun' $(BINARY_DIR)$(INSTALL_PREFIX)/bin | while read i; do \
-	  sed -e 's|#!/usr/$(MINGW_HOST)/bin/ocamlrun|#!/usr/bin/$(MINGW_HOST)-ocamlrun|' -i $$i; \
+	# Now make all script with #!$(INSTALL_PREFIX)/$(MINGW_HOST)/bin/ocamlrun executables
+	grep -r -l '#!$(INSTALL_PREFIX)/$(MINGW_HOST)/bin/ocamlrun' $(BINARY_DIR)$(INSTALL_PREFIX)/bin | while read i; do \
+	  $(SED) -e 's|#!$(INSTALL_PREFIX)/$(MINGW_HOST)/bin/ocamlrun|#!$(INSTALL_PREFIX)/bin/$(MINGW_HOST)-ocamlrun|' -i $$i; \
 	  chmod +x $$i; done
-	# Remove rm -rf $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin: all binaries should be prefixed and living in /usr/bin..
+	# Remove rm -rf $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin: all binaries should be prefixed and living in $(INSTALL_PREFIX)/$(MINGW_HOST)/bin..
 	rm -rf $(BINARY_DIR)$(INSTALL_PREFIX)/$(MINGW_HOST)/bin
 	touch stamp-binary-all
 
 install: stamp-binary-all
-	find $(BINARY_DIR) -type f | sed -e s'#$(BINARY_DIR)##g' | while read i; do \
+	find $(BINARY_DIR) -type f | $(SED) -e s'#$(BINARY_DIR)##g' | while read i; do \
 	  [ -d $(INSTALL_DIR)`dirname $$i` ] || mkdir -p $(INSTALL_DIR)`dirname $$i`; \
 	  cp -f $(BINARY_DIR)/$$i $(INSTALL_DIR)`dirname $$i`; \
 	done
